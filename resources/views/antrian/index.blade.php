@@ -30,6 +30,7 @@
                                         <th>Nama Pemilik</th>
                                         <th>Tanggal / Waktu</th>
                                         <th>Status</th>
+                                        <th>Aksi</th> <!-- Kolom Aksi Baru -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -42,6 +43,7 @@
                                             <td>{{ $antrian->kendaraan->nama_pemilik ?? '-' }}</td>
                                             <td>{{ $antrian->tanggal }} {{ $antrian->waktu }}</td>
                                             <td>
+                                                <!-- Dropdown status yang sudah ada sebelumnya -->
                                                 <form action="{{ route('antrian.updateStatus', $antrian->id) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('PATCH')
@@ -58,10 +60,19 @@
                                                     </select>
                                                 </form>
                                             </td>
+                                            <td>
+                                                <!-- Tombol Edit & Delete -->
+                                                <a href="{{ route('antrian.edit', $antrian->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                <form action="{{ route('antrian.destroy', $antrian->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="7" class="text-center text-muted py-4">Belum ada data antrian kendaraan di database.</td>
+                                            <td colspan="8" class="text-center text-muted py-4">Belum ada data antrian kendaraan di database.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
