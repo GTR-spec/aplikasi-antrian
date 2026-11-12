@@ -42,15 +42,21 @@
                                             <td>{{ $antrian->kendaraan->nama_pemilik ?? '-' }}</td>
                                             <td>{{ $antrian->tanggal }} {{ $antrian->waktu }}</td>
                                             <td>
-                                                @if($antrian->status_antrian == 'Menunggu')
-                                                    <span class="badge bg-warning text-dark">Menunggu</span>
-                                                @elseif($antrian->status_antrian == 'Diproses')
-                                                    <span class="badge bg-primary">Diproses</span>
-                                                @elseif($antrian->status_antrian == 'Selesai')
-                                                    <span class="badge bg-success">Selesai</span>
-                                                @else
-                                                    <span class="badge bg-danger">Batal</span>
-                                                @endif
+                                                <form action="{{ route('antrian.updateStatus', $antrian->id) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <select name="status_antrian" onchange="this.form.submit()" class="form-select form-select-sm 
+                                                        @if($antrian->status_antrian == 'Menunggu') bg-warning text-dark 
+                                                        @elseif($antrian->status_antrian == 'Diproses') bg-primary text-white 
+                                                        @elseif($antrian->status_antrian == 'Selesai') bg-success text-white 
+                                                        @else bg-danger text-white 
+                                                        @endif">
+                                                        <option value="Menunggu" {{ $antrian->status_antrian == 'Menunggu' ? 'selected' : '' }}>Menunggu</option>
+                                                        <option value="Diproses" {{ $antrian->status_antrian == 'Diproses' ? 'selected' : '' }}>Diproses</option>
+                                                        <option value="Selesai" {{ $antrian->status_antrian == 'Selesai' ? 'selected' : '' }}>Selesai</option>
+                                                        <option value="Batal" {{ $antrian->status_antrian == 'Batal' ? 'selected' : '' }}>Batal</option>
+                                                    </select>
+                                                </form>
                                             </td>
                                         </tr>
                                     @empty
